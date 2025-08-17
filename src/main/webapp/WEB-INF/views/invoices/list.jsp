@@ -37,11 +37,36 @@
             <body>
                 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
                     <div class="container-fluid px-4">
-                        <a class="navbar-brand" href="<c:url value='/dashboard'/>"><i
-                                class="fas fa-file-invoice text-primary me-2"></i>Invoices</a>
-                        <div class="d-flex ms-auto align-items-center">
-                            <div class="me-3 text-muted small">Welcome, <strong>${sessionScope.userName}</strong></div>
-                            <a class="btn btn-outline-secondary btn-sm" href="<c:url value='/logout'/>">Logout</a>
+                        <a class="navbar-brand d-flex align-items-center" href="<c:url value='/dashboard'/>">
+                            <span class="me-2"><i class="fas fa-file-invoice text-primary me-2"></i></span>
+                            <span>Invoices</span>
+                        </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarNav">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<c:url value='/dashboard'/>">Overview</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<c:url value='/customers?action=list'/>">Customers</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<c:url value='/items?action=list'/>">Items</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active"
+                                        href="<c:url value='/invoices?action=list'/>">Invoices</a>
+                                </li>
+                            </ul>
+
+                            <div class="d-flex align-items-center">
+                                <div class="me-3 text-muted small">Welcome, <strong>${sessionScope.userName}</strong>
+                                </div>
+                                <a class="btn btn-outline-secondary btn-sm" href="<c:url value='/logout'/>">Logout</a>
+                            </div>
                         </div>
                     </div>
                 </nav>

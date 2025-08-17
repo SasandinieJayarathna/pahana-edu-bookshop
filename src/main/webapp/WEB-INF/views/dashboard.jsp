@@ -7,208 +7,210 @@
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Dashboard - Pahana Edu Billing System</title>
+                <title>Dashboard</title>
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
                 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+                <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+                    rel="stylesheet">
+                <style>
+                    body {
+                        font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+                        background: #f5f7fb;
+                    }
+
+                    .navbar-brand {
+                        font-weight: 600;
+                        letter-spacing: 0.2px
+                    }
+
+                    .card-modern {
+                        border: 0;
+                        border-radius: 12px;
+                        box-shadow: 0 6px 18px rgba(45, 63, 84, 0.08);
+                    }
+
+                    .stat-icon {
+                        width: 56px;
+                        height: 56px;
+                        border-radius: 12px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: #fff;
+                    }
+
+                    .stat-value {
+                        font-size: 1.6rem;
+                        font-weight: 700
+                    }
+
+                    .stat-label {
+                        color: #6b7280;
+                        font-size: 0.9rem
+                    }
+
+                    .quick-btn {
+                        border-radius: 10px;
+                        padding: 0.6rem 1rem;
+                    }
+                </style>
             </head>
 
             <body>
-                <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-                    <div class="container">
-                        <a class="navbar-brand" href="<c:url value='/dashboard'/>">
-                            <i class="fas fa-bolt"></i> Pahana Edu Billing
+                <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+                    <div class="container-fluid px-4">
+                        <a class="navbar-brand d-flex align-items-center" href="<c:url value='/dashboard'/>">
+                            <span class="me-2"><i class="fas fa-bolt text-primary"></i></span>
+                            <span>Dashboard</span>
                         </a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarNav">
                             <span class="navbar-toggler-icon"></span>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarNav">
-                            <ul class="navbar-nav me-auto">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="<c:url value='/dashboard'/>">
-                                        <i class="fas fa-tachometer-alt"></i> Dashboard
-                                    </a>
+                                    <a class="nav-link active" href="<c:url value='/dashboard'/>">Overview</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="<c:url value='/customers?action=list'/>">
-                                        <i class="fas fa-users"></i> Customers
-                                    </a>
+                                    <a class="nav-link" href="<c:url value='/customers?action=list'/>">Customers</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="<c:url value='/items?action=list'/>">
-                                        <i class="fas fa-box"></i> Items
-                                    </a>
+                                    <a class="nav-link" href="<c:url value='/items?action=list'/>">Items</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="<c:url value='/invoices?action=list'/>">
-                                        <i class="fas fa-file-invoice"></i> Invoices
-                                    </a>
+                                    <a class="nav-link" href="<c:url value='/invoices?action=list'/>">Invoices</a>
                                 </li>
                             </ul>
-                            <div class="navbar-nav">
-                                <span class="navbar-text me-3">
-                                    <i class="fas fa-user"></i> Welcome, ${sessionScope.userName}
-                                </span>
-                                <a class="nav-link" href="<c:url value='/logout'/>">
-                                    <i class="fas fa-sign-out-alt"></i> Logout
-                                </a>
+
+                            <div class="d-flex align-items-center">
+                                <div class="me-3 text-muted small">Welcome, <strong>${sessionScope.userName}</strong>
+                                </div>
+                                <a class="btn btn-outline-secondary btn-sm" href="<c:url value='/logout'/>">Logout</a>
                             </div>
                         </div>
                     </div>
                 </nav>
 
-                <div class="container mt-4">
-                    <div class="row">
-                        <div class="col-12">
-                            <h2 class="mb-4">
-                                <i class="fas fa-tachometer-alt"></i> Dashboard Overview
-                            </h2>
+                <div class="container-fluid px-4 mt-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h1 class="h4 mb-0">Dashboard Overview</h1>
+                            <p class="text-muted small mb-0">Quick insights and shortcuts to manage the system.</p>
+                        </div>
+                        <div>
+                            <a href="<c:url value='/invoices?action=new'/>" class="btn btn-primary btn-sm me-2">New
+                                Invoice</a>
+                            <a href="<c:url value='/customers?action=new'/>" class="btn btn-outline-primary btn-sm">New
+                                Customer</a>
+                        </div>
+                    </div>
 
-                            <c:if test="${not empty errorMessage}">
-                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                    ${errorMessage}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                </div>
-                            </c:if>
+                    <c:if test="${not empty errorMessage}">
+                        <div class="alert alert-danger" role="alert">${errorMessage}</div>
+                    </c:if>
 
-                            <!-- Statistics Cards -->
-                            <div class="row mb-4">
-                                <div class="col-md-3">
-                                    <div class="card text-white bg-primary">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <div>
-                                                    <h4 class="card-title">${totalCustomers}</h4>
-                                                    <p class="card-text">Total Customers</p>
-                                                </div>
-                                                <div class="align-self-center">
-                                                    <i class="fas fa-users fa-2x opacity-75"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer">
-                                            <a href="<c:url value='/customers?action=list'/>"
-                                                class="text-white text-decoration-none">
-                                                View All <i class="fas fa-arrow-right"></i>
-                                            </a>
-                                        </div>
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-3 col-sm-6">
+                            <div class="card card-modern p-3 h-100">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="stat-icon bg-primary">
+                                        <i class="fas fa-users fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <div class="stat-value">${totalCustomers}</div>
+                                        <div class="stat-label">Total Customers</div>
                                     </div>
                                 </div>
-
-                                <div class="col-md-3">
-                                    <div class="card text-white bg-success">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <div>
-                                                    <h4 class="card-title">${totalInvoices}</h4>
-                                                    <p class="card-text">Total Invoices</p>
-                                                </div>
-                                                <div class="align-self-center">
-                                                    <i class="fas fa-file-invoice fa-2x opacity-75"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer">
-                                            <a href="<c:url value='/invoices?action=list'/>"
-                                                class="text-white text-decoration-none">
-                                                View All <i class="fas fa-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="card text-white bg-info">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <div>
-                                                    <h4 class="card-title">${totalItems}</h4>
-                                                    <p class="card-text">Active Items</p>
-                                                </div>
-                                                <div class="align-self-center">
-                                                    <i class="fas fa-box fa-2x opacity-75"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer">
-                                            <a href="<c:url value='/items?action=list'/>"
-                                                class="text-white text-decoration-none">
-                                                View All <i class="fas fa-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <div class="card text-white bg-warning">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <div>
-                                                    <h4 class="card-title">$
-                                                        <fmt:formatNumber value="${totalRevenue}" pattern="#,##0.00" />
-                                                    </h4>
-                                                    <p class="card-text">Total Revenue</p>
-                                                </div>
-                                                <div class="align-self-center">
-                                                    <i class="fas fa-dollar-sign fa-2x opacity-75"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer">
-                                            <span class="text-white">
-                                                From all invoices
-                                            </span>
-                                        </div>
-                                    </div>
+                                <div class="mt-3">
+                                    <a href="<c:url value='/customers?action=list'/>"
+                                        class="text-decoration-none small">View all customers &rarr;</a>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Quick Actions -->
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h5 class="mb-0">
-                                                <i class="fas fa-plus-circle"></i> Quick Actions
-                                            </h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="d-grid gap-2">
-                                                <a href="<c:url value='/customers?action=new'/>"
-                                                    class="btn btn-outline-primary">
-                                                    <i class="fas fa-user-plus"></i> Add New Customer
-                                                </a>
-                                                <a href="<c:url value='/items?action=new'/>"
-                                                    class="btn btn-outline-success">
-                                                    <i class="fas fa-box"></i> Add New Item
-                                                </a>
-                                                <a href="<c:url value='/invoices?action=new'/>"
-                                                    class="btn btn-outline-warning">
-                                                    <i class="fas fa-file-invoice"></i> Create New Invoice
-                                                </a>
-                                            </div>
-                                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="card card-modern p-3 h-100">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="stat-icon bg-success">
+                                        <i class="fas fa-file-invoice fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <div class="stat-value">${totalInvoices}</div>
+                                        <div class="stat-label">Total Invoices</div>
                                     </div>
                                 </div>
+                                <div class="mt-3">
+                                    <a href="<c:url value='/invoices?action=list'/>"
+                                        class="text-decoration-none small">View all invoices &rarr;</a>
+                                </div>
+                            </div>
+                        </div>
 
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h5 class="mb-0">
-                                                <i class="fas fa-info-circle"></i> System Information
-                                            </h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <p><strong>Application:</strong> Pahana Edu Billing System</p>
-                                            <p><strong>Technology Stack:</strong> Jakarta EE 10 + Pure JDBC</p>
-                                            <p><strong>Database:</strong> MySQL 8+</p>
-                                            <p><strong>Version:</strong> 1.0.0</p>
-                                            <p class="text-muted mb-0">
-                                                <small>Built with Jakarta Servlets, JSP, JSTL, and MySQL</small>
-                                            </p>
-                                        </div>
+                        <div class="col-md-3 col-sm-6">
+                            <div class="card card-modern p-3 h-100">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="stat-icon bg-info">
+                                        <i class="fas fa-box fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <div class="stat-value">${totalItems}</div>
+                                        <div class="stat-label">Active Items</div>
                                     </div>
                                 </div>
+                                <div class="mt-3">
+                                    <a href="<c:url value='/items?action=list'/>"
+                                        class="text-decoration-none small">View items &rarr;</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6">
+                            <div class="card card-modern p-3 h-100">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="stat-icon bg-warning">
+                                        <i class="fas fa-dollar-sign fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <div class="stat-value">$
+                                            <fmt:formatNumber value="${totalRevenue}" pattern="#,##0.00" />
+                                        </div>
+                                        <div class="stat-label">Total Revenue</div>
+                                    </div>
+                                </div>
+                                <div class="mt-3 small text-muted">From all invoices</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-lg-8">
+                            <div class="card card-modern p-3">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="mb-0">Quick Actions</h5>
+                                </div>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <a href="<c:url value='/customers?action=new'/>"
+                                        class="btn btn-outline-primary quick-btn">
+                                        <i class="fas fa-user-plus me-2"></i> Add Customer
+                                    </a>
+                                    <a href="<c:url value='/items?action=new'/>"
+                                        class="btn btn-outline-success quick-btn">
+                                        <i class="fas fa-box me-2"></i> Add Item
+                                    </a>
+                                    <a href="<c:url value='/invoices?action=new'/>"
+                                        class="btn btn-outline-warning quick-btn">
+                                        <i class="fas fa-file-invoice me-2"></i> Create Invoice
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="card card-modern p-3">
+                                <h6 class="mb-2">About</h6>
+                                <p class="small text-muted mb-0">Use the navigation and quick actions to manage
+                                    customers, items, and invoices efficiently.</p>
                             </div>
                         </div>
                     </div>
