@@ -1,0 +1,166 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+    <%@ taglib prefix="c" uri="jakarta.tags.core" %>
+        <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
+            <!DOCTYPE html>
+            <html lang="en">
+
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Invoices</title>
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+                <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+                    rel="stylesheet">
+                <style>
+                    body {
+                        font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+                        background: #f5f7fb;
+                    }
+
+                    .navbar-brand {
+                        font-weight: 600
+                    }
+
+                    .card-modern {
+                        border: 0;
+                        border-radius: 12px;
+                        box-shadow: 0 6px 18px rgba(45, 63, 84, 0.06);
+                    }
+
+                    .table-modern thead {
+                        background: #eef2ff
+                    }
+                </style>
+            </head>
+
+            <body>
+                <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+                    <div class="container-fluid px-4">
+                        <a class="navbar-brand" href="<c:url value='/dashboard'/>"><i
+                                class="fas fa-file-invoice text-primary me-2"></i>Invoices</a>
+                        <div class="d-flex ms-auto align-items-center">
+                            <div class="me-3 text-muted small">Welcome, <strong>${sessionScope.userName}</strong></div>
+                            <a class="btn btn-outline-secondary btn-sm" href="<c:url value='/logout'/>">Logout</a>
+                        </div>
+                    </div>
+                </nav>
+
+                <div class="container-fluid px-4 mt-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h1 class="h5 mb-0">Invoices</h1>
+                            <p class="small text-muted mb-0">Manage invoices and billing records.</p>
+                        </div>
+                        <div>
+                            <a href="<c:url value='/invoices?action=new'/>" class="btn btn-primary btn-sm"><i
+                                    class="fas fa-plus me-1"></i> New Invoice</a>
+                        </div>
+                    </div>
+
+                    <c:if test="${not empty errorMessage}">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            ${errorMessage}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    </c:if>
+
+                    <c:if test="${not empty successMessage}">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            ${successMessage}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    </c:if>
+
+                    <!-- Invoice List -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Invoices</h5>
+                        </div>
+                        <div class="card-body">
+                            <c:choose>
+                                <c:when test="${empty invoices}">
+                                    <div class="text-center py-4">
+                                        <p class="text-muted">No invoices found.</p>
+                                        <a href="<c:url value='/invoices?action=new'/>" class="btn btn-primary">
+                                            Create Your First Invoice
+                                        </a>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th>Invoice #</th>
+                                                    <th>Customer</th>
+                                                    <th>Invoice Date</th>
+                                                    <th>Due Date</th>
+                                                    <th>Status</th>
+                                                    <th>Total Amount</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach var="invoice" items="${invoices}">
+                                                    <tr>
+                                                        <td><strong>${invoice.invoiceNumber}</strong></td>
+                                                        <td>${invoice.customer.name}</td>
+                                                        <td>
+                                                            ${invoice.invoiceDate}
+                                                        </td>
+                                                        <td>
+                                                            ${invoice.dueDate}
+                                                        </td>
+                                                        <td>
+                                                            <span class="badge bg-info">${invoice.paymentStatus}</span>
+                                                        </td>
+                                                        <td>
+                                                            <fmt:formatNumber value="${invoice.totalAmount}"
+                                                                pattern="#,##0.00" />
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group" role="group">
+                                                                <a href="<c:url value='/invoices?action=view&id=${invoice.id}'/>"
+                                                                    class="btn btn-sm btn-outline-info" title="View">
+                                                                    <i class="fas fa-eye"></i>
+                                                                </a>
+                                                                <a href="<c:url value='/invoices?action=print&id=${invoice.id}'/>"
+                                                                    class="btn btn-sm btn-outline-success" title="Print"
+                                                                    target="_blank">
+                                                                    <i class="fas fa-print"></i>
+                                                                </a>
+                                                                <a href="<c:url value='/invoices?action=edit&id=${invoice.id}'/>"
+                                                                    class="btn btn-sm btn-outline-warning" title="Edit">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                <form method="post" action="<c:url value='/invoices'/>"
+                                                                    style="display: inline;">
+                                                                    <input type="hidden" name="action" value="delete">
+                                                                    <input type="hidden" name="id"
+                                                                        value="${invoice.id}">
+                                                                    <button type="submit"
+                                                                        class="btn btn-sm btn-outline-danger"
+                                                                        onclick="return confirm('Delete this invoice?')">
+                                                                        <i class="fas fa-trash"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                </div>
+
+                <script src="<c:url value='/js/bootstrap.bundle.min.js'/>"></script>
+            </body>
+
+            </html>
