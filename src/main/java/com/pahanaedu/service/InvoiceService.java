@@ -32,9 +32,10 @@ public class InvoiceService {
 
     /**
      * Create a new invoice
-     * @param customerId customer ID
+     * 
+     * @param customerId  customer ID
      * @param invoiceDate invoice date
-     * @param dueDate due date
+     * @param dueDate     due date
      * @return created invoice
      */
     public Invoice createInvoice(int customerId, LocalDate invoiceDate, LocalDate dueDate) {
@@ -56,10 +57,11 @@ public class InvoiceService {
 
     /**
      * Add item to invoice
+     * 
      * @param invoiceId invoice ID
-     * @param itemId item ID
-     * @param quantity quantity
-     * @param discount discount amount
+     * @param itemId    item ID
+     * @param quantity  quantity
+     * @param discount  discount amount
      * @return created invoice item
      */
     public InvoiceItem addItemToInvoice(int invoiceId, int itemId, BigDecimal quantity, BigDecimal discount) {
@@ -139,6 +141,7 @@ public class InvoiceService {
 
     /**
      * Find invoice by ID with items
+     * 
      * @param id invoice ID
      * @return Optional containing invoice if found
      */
@@ -148,6 +151,7 @@ public class InvoiceService {
 
     /**
      * Get invoice items for an invoice
+     * 
      * @param invoiceId invoice ID
      * @return list of invoice items
      */
@@ -157,6 +161,7 @@ public class InvoiceService {
 
     /**
      * Find all invoices
+     * 
      * @return list of all invoices
      */
     public List<Invoice> findAll() {
@@ -165,6 +170,7 @@ public class InvoiceService {
 
     /**
      * Find invoices by customer ID
+     * 
      * @param customerId customer ID
      * @return list of invoices for the customer
      */
@@ -174,6 +180,7 @@ public class InvoiceService {
 
     /**
      * Remove item from invoice
+     * 
      * @param invoiceItemId invoice item ID to remove
      */
     public void removeItemFromInvoice(int invoiceItemId) {
@@ -194,7 +201,8 @@ public class InvoiceService {
 
     /**
      * Update invoice payment status
-     * @param invoiceId invoice ID
+     * 
+     * @param invoiceId     invoice ID
      * @param paymentStatus new payment status
      */
     public void updatePaymentStatus(int invoiceId, Invoice.PaymentStatus paymentStatus) {
@@ -209,7 +217,22 @@ public class InvoiceService {
     }
 
     /**
+     * Update invoice details
+     * 
+     * @param invoice invoice to update
+     */
+    public void updateInvoice(Invoice invoice) {
+        // Verify invoice exists
+        if (invoiceDAO.findById(invoice.getId()).isEmpty()) {
+            throw new RuntimeException("Invoice not found");
+        }
+
+        invoiceDAO.update(invoice);
+    }
+
+    /**
      * Delete invoice and all its items
+     * 
      * @param invoiceId invoice ID to delete
      */
     public void deleteInvoice(int invoiceId) {

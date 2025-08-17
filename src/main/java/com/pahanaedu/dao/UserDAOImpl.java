@@ -94,7 +94,11 @@ public class UserDAOImpl implements UserDAO {
 
             return Optional.empty();
         } catch (SQLException e) {
+            System.err.println("Error executing findByEmail query: " + e.getMessage());
             throw new RuntimeException("Error finding user by email", e);
+        } catch (Exception e) {
+            System.err.println("Unexpected error in findByEmail: " + e.getMessage());
+            throw new RuntimeException("Unexpected error finding user by email", e);
         }
     }
 

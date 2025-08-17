@@ -26,6 +26,7 @@ public class DatabaseConnection {
 
     /**
      * Get a database connection
+     * 
      * @return Connection object
      * @throws SQLException if connection fails
      */
@@ -35,6 +36,7 @@ public class DatabaseConnection {
 
     /**
      * Test database connectivity
+     * 
      * @return true if connection is successful
      */
     public static boolean testConnection() {
@@ -48,6 +50,7 @@ public class DatabaseConnection {
 
     /**
      * Close connection safely
+     * 
      * @param connection Connection to close
      */
     public static void closeConnection(Connection connection) {

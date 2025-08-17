@@ -56,6 +56,9 @@ public class InvoiceServlet extends HttpServlet {
             case "view":
                 viewInvoice(request, response);
                 break;
+            case "print":
+                printInvoice(request, response);
+                break;
             default:
                 listInvoices(request, response);
                 break;
@@ -74,6 +77,9 @@ public class InvoiceServlet extends HttpServlet {
         switch (action) {
             case "save":
                 saveInvoice(request, response);
+                break;
+            case "update":
+                updateInvoice(request, response);
                 break;
             case "addItem":
                 addItemToInvoice(request, response);
@@ -125,7 +131,8 @@ public class InvoiceServlet extends HttpServlet {
         } catch (Exception e) {
             // If error occurs, redirect back to edit page with error
             int invoiceId = Integer.parseInt(request.getParameter("invoiceId"));
-            response.sendRedirect(request.getContextPath() + "/invoices?action=edit&id=" + invoiceId + "&error=" + e.getMessage());
+            response.sendRedirect(
+                    request.getContextPath() + "/invoices?action=edit&id=" + invoiceId + "&error=" + e.getMessage());
         }
     }
 
@@ -136,11 +143,36 @@ public class InvoiceServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
+            System.out.println("DEBUG: Starting listInvoices method");
+
+            // Test database connection first
+            try {
+                boolean connectionTest = com.pahanaedu.util.DatabaseConnection.testConnection();
+                System.out.println("DEBUG: Database connection test: " + connectionTest);
+                if (!connectionTest) {
+                    throw new RuntimeException("Database connection failed");
+                }
+            } catch (Exception dbE) {
+                System.err.println("DEBUG: Database connection error: " + dbE.getMessage());
+                throw new RuntimeException("Database connection failed: " + dbE.getMessage(), dbE);
+            }
+
             List<Invoice> invoices = invoiceService.findAll();
+            System.out.println("DEBUG: Found " + (invoices != null ? invoices.size() : "null") + " invoices");
             request.setAttribute("invoices", invoices);
             request.getRequestDispatcher("/WEB-INF/views/invoices/list.jsp").forward(request, response);
         } catch (Exception e) {
-            request.setAttribute("errorMessage", "Error loading invoices: " + e.getMessage());
+            System.err.println("ERROR in listInvoices: " + e.getMessage());
+            e.printStackTrace();
+
+            // Create a detailed error message
+            String detailedError = "Error loading invoices: " + e.getMessage();
+            if (e.getCause() != null) {
+                detailedError += " (Caused by: " + e.getCause().getMessage() + ")";
+            }
+
+            request.setAttribute("errorMessage", detailedError);
+            request.setAttribute("errorDetails", e.toString());
             request.getRequestDispatcher("/WEB-INF/views/error.jsp").forward(request, response);
         }
     }
@@ -260,6 +292,49 @@ public class InvoiceServlet extends HttpServlet {
     }
 
     /**
+     * Update existing invoice
+     */
+    private void updateInvoice(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        try {
+            int invoiceId = Integer.parseInt(request.getParameter("invoiceId"));
+            LocalDate invoiceDate = LocalDate.parse(request.getParameter("invoiceDate"));
+            LocalDate dueDate = LocalDate.parse(request.getParameter("dueDate"));
+            String paymentTerms = request.getParameter("paymentTerms");
+            String paymentStatus = request.getParameter("paymentStatus");
+            String notes = request.getParameter("notes");
+
+            // Get the existing invoice
+            Optional<Invoice> invoiceOptional = invoiceService.findByIdWithItems(invoiceId);
+            if (invoiceOptional.isEmpty()) {
+                throw new RuntimeException("Invoice not found");
+            }
+
+            Invoice invoice = invoiceOptional.get();
+            invoice.setInvoiceDate(invoiceDate);
+            invoice.setDueDate(dueDate);
+            invoice.setPaymentTerms(paymentTerms);
+            invoice.setPaymentStatus(Invoice.PaymentStatus.valueOf(paymentStatus));
+            invoice.setNotes(notes);
+
+            // Update the invoice using the service
+            invoiceService.updateInvoice(invoice);
+
+            response.sendRedirect(
+                    request.getContextPath() + "/invoices?action=edit&id=" + invoiceId + "&success=updated");
+        } catch (Exception e) {
+            try {
+                request.setAttribute("errorMessage", "Error updating invoice: " + e.getMessage());
+                showEditForm(request, response);
+            } catch (Exception ex) {
+                request.setAttribute("errorMessage", "Error updating invoice: " + e.getMessage());
+                listInvoices(request, response);
+            }
+        }
+    }
+
+    /**
      * Remove item from invoice
      */
     private void removeItemFromInvoice(HttpServletRequest request, HttpServletResponse response)
@@ -274,7 +349,8 @@ public class InvoiceServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/invoices?action=edit&id=" + invoiceId);
         } catch (Exception e) {
             int invoiceId = Integer.parseInt(request.getParameter("invoiceId"));
-            response.sendRedirect(request.getContextPath() + "/invoices?action=edit&id=" + invoiceId + "&error=" + e.getMessage());
+            response.sendRedirect(
+                    request.getContextPath() + "/invoices?action=edit&id=" + invoiceId + "&error=" + e.getMessage());
         }
     }
 
@@ -293,7 +369,38 @@ public class InvoiceServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/invoices?action=view&id=" + invoiceId);
         } catch (Exception e) {
             int invoiceId = Integer.parseInt(request.getParameter("invoiceId"));
-            response.sendRedirect(request.getContextPath() + "/invoices?action=view&id=" + invoiceId + "&error=" + e.getMessage());
+            response.sendRedirect(
+                    request.getContextPath() + "/invoices?action=view&id=" + invoiceId + "&error=" + e.getMessage());
+        }
+    }
+
+    /**
+     * Display printable version of invoice
+     */
+    private void printInvoice(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        try {
+            int id = Integer.parseInt(request.getParameter("id"));
+            Optional<Invoice> invoiceOptional = invoiceService.findByIdWithItems(id);
+
+            if (invoiceOptional.isPresent()) {
+                Invoice invoice = invoiceOptional.get();
+                List<InvoiceItem> invoiceItems = invoiceService.getInvoiceItems(id);
+
+                request.setAttribute("invoice", invoice);
+                request.setAttribute("invoiceItems", invoiceItems);
+                request.getRequestDispatcher("/WEB-INF/views/invoices/print.jsp").forward(request, response);
+            } else {
+                request.setAttribute("errorMessage", "Invoice not found");
+                listInvoices(request, response);
+            }
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "Invalid invoice ID");
+            listInvoices(request, response);
+        } catch (Exception e) {
+            request.setAttribute("errorMessage", "Error loading invoice for printing: " + e.getMessage());
+            listInvoices(request, response);
         }
     }
 

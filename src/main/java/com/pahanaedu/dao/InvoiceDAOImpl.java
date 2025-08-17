@@ -15,42 +15,42 @@ import java.util.Optional;
  */
 public class InvoiceDAOImpl implements InvoiceDAO {
 
-    private static final String INSERT_INVOICE =
-        "INSERT INTO invoices (invoiceNumber, customer_id, invoiceDate, dueDate, subtotal, taxAmount, discountAmount, totalAmount, paymentStatus, notes, paymentTerms) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String INSERT_INVOICE = "INSERT INTO invoices (invoiceNumber, customer_id, invoiceDate, dueDate, subtotal, taxAmount, discountAmount, totalAmount, paymentStatus, notes, paymentTerms) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    private static final String SELECT_INVOICE_BY_ID =
-        "SELECT i.id, i.invoiceNumber, i.customer_id, i.invoiceDate, i.dueDate, i.subtotal, i.taxAmount, i.discountAmount, i.totalAmount, i.paymentStatus, i.notes, i.paymentTerms, i.created_at, i.updated_at, " +
-        "c.name as customer_name, c.email as customer_email, c.phone as customer_phone, c.address as customer_address " +
-        "FROM invoices i LEFT JOIN customers c ON i.customer_id = c.id WHERE i.id = ?";
+    private static final String SELECT_INVOICE_BY_ID = "SELECT i.id, i.invoiceNumber, i.customer_id, i.invoiceDate, i.dueDate, i.subtotal, i.taxAmount, i.discountAmount, i.totalAmount, i.paymentStatus, i.notes, i.paymentTerms, i.created_at, i.updated_at, "
+            +
+            "c.name as customer_name, c.email as customer_email, c.phone as customer_phone, c.address as customer_address "
+            +
+            "FROM invoices i LEFT JOIN customers c ON i.customer_id = c.id WHERE i.id = ?";
 
-    private static final String SELECT_ALL_INVOICES =
-        "SELECT i.id, i.invoiceNumber, i.customer_id, i.invoiceDate, i.dueDate, i.subtotal, i.taxAmount, i.discountAmount, i.totalAmount, i.paymentStatus, i.notes, i.paymentTerms, i.created_at, i.updated_at, " +
-        "c.name as customer_name, c.email as customer_email, c.phone as customer_phone, c.address as customer_address " +
-        "FROM invoices i LEFT JOIN customers c ON i.customer_id = c.id ORDER BY i.invoiceDate DESC";
+    private static final String SELECT_ALL_INVOICES = "SELECT i.id, i.invoiceNumber, i.customer_id, i.invoiceDate, i.dueDate, i.subtotal, i.taxAmount, i.discountAmount, i.totalAmount, i.paymentStatus, i.notes, i.paymentTerms, i.created_at, i.updated_at, "
+            +
+            "c.name as customer_name, c.email as customer_email, c.phone as customer_phone, c.address as customer_address "
+            +
+            "FROM invoices i LEFT JOIN customers c ON i.customer_id = c.id ORDER BY i.invoiceDate DESC";
 
-    private static final String SELECT_INVOICES_BY_CUSTOMER_ID =
-        "SELECT i.id, i.invoiceNumber, i.customer_id, i.invoiceDate, i.dueDate, i.subtotal, i.taxAmount, i.discountAmount, i.totalAmount, i.paymentStatus, i.notes, i.paymentTerms, i.created_at, i.updated_at, " +
-        "c.name as customer_name, c.email as customer_email, c.phone as customer_phone, c.address as customer_address " +
-        "FROM invoices i LEFT JOIN customers c ON i.customer_id = c.id WHERE i.customer_id = ? ORDER BY i.invoiceDate DESC";
+    private static final String SELECT_INVOICES_BY_CUSTOMER_ID = "SELECT i.id, i.invoiceNumber, i.customer_id, i.invoiceDate, i.dueDate, i.subtotal, i.taxAmount, i.discountAmount, i.totalAmount, i.paymentStatus, i.notes, i.paymentTerms, i.created_at, i.updated_at, "
+            +
+            "c.name as customer_name, c.email as customer_email, c.phone as customer_phone, c.address as customer_address "
+            +
+            "FROM invoices i LEFT JOIN customers c ON i.customer_id = c.id WHERE i.customer_id = ? ORDER BY i.invoiceDate DESC";
 
-    private static final String UPDATE_INVOICE =
-        "UPDATE invoices SET invoiceNumber = ?, customer_id = ?, invoiceDate = ?, dueDate = ?, subtotal = ?, taxAmount = ?, discountAmount = ?, totalAmount = ?, paymentStatus = ?, notes = ?, paymentTerms = ? WHERE id = ?";
+    private static final String UPDATE_INVOICE = "UPDATE invoices SET invoiceNumber = ?, customer_id = ?, invoiceDate = ?, dueDate = ?, subtotal = ?, taxAmount = ?, discountAmount = ?, totalAmount = ?, paymentStatus = ?, notes = ?, paymentTerms = ? WHERE id = ?";
 
-    private static final String DELETE_INVOICE =
-        "DELETE FROM invoices WHERE id = ?";
+    private static final String DELETE_INVOICE = "DELETE FROM invoices WHERE id = ?";
 
-    private static final String SELECT_INVOICE_BY_NUMBER =
-        "SELECT i.id, i.invoiceNumber, i.customer_id, i.invoiceDate, i.dueDate, i.subtotal, i.taxAmount, i.discountAmount, i.totalAmount, i.paymentStatus, i.notes, i.paymentTerms, i.created_at, i.updated_at, " +
-        "c.name as customer_name, c.email as customer_email, c.phone as customer_phone, c.address as customer_address " +
-        "FROM invoices i LEFT JOIN customers c ON i.customer_id = c.id WHERE i.invoiceNumber = ?";
+    private static final String SELECT_INVOICE_BY_NUMBER = "SELECT i.id, i.invoiceNumber, i.customer_id, i.invoiceDate, i.dueDate, i.subtotal, i.taxAmount, i.discountAmount, i.totalAmount, i.paymentStatus, i.notes, i.paymentTerms, i.created_at, i.updated_at, "
+            +
+            "c.name as customer_name, c.email as customer_email, c.phone as customer_phone, c.address as customer_address "
+            +
+            "FROM invoices i LEFT JOIN customers c ON i.customer_id = c.id WHERE i.invoiceNumber = ?";
 
-    private static final String SELECT_MAX_INVOICE_NUMBER =
-        "SELECT MAX(CAST(SUBSTRING(invoiceNumber, 4) AS UNSIGNED)) as max_num FROM invoices WHERE invoiceNumber LIKE 'INV%'";
+    private static final String SELECT_MAX_INVOICE_NUMBER = "SELECT MAX(CAST(SUBSTRING(invoiceNumber, 4) AS UNSIGNED)) as max_num FROM invoices WHERE invoiceNumber LIKE 'INV%'";
 
     @Override
     public Invoice save(Invoice invoice) {
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(INSERT_INVOICE, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement stmt = conn.prepareStatement(INSERT_INVOICE, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, invoice.getInvoiceNumber());
             stmt.setInt(2, invoice.getCustomerId());
@@ -86,7 +86,7 @@ public class InvoiceDAOImpl implements InvoiceDAO {
     @Override
     public Optional<Invoice> findById(int id) {
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SELECT_INVOICE_BY_ID)) {
+                PreparedStatement stmt = conn.prepareStatement(SELECT_INVOICE_BY_ID)) {
 
             stmt.setInt(1, id);
 
@@ -107,14 +107,18 @@ public class InvoiceDAOImpl implements InvoiceDAO {
         List<Invoice> invoices = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SELECT_ALL_INVOICES);
-             ResultSet rs = stmt.executeQuery()) {
+                PreparedStatement stmt = conn.prepareStatement(SELECT_ALL_INVOICES);
+                ResultSet rs = stmt.executeQuery()) {
 
+            System.out.println("DEBUG: Executing findAll query");
             while (rs.next()) {
                 invoices.add(mapResultSetToInvoice(rs));
             }
+            System.out.println("DEBUG: findAll completed, found " + invoices.size() + " invoices");
 
         } catch (SQLException e) {
+            System.err.println("ERROR in findAll: " + e.getMessage());
+            e.printStackTrace();
             throw new RuntimeException("Error finding all invoices", e);
         }
 
@@ -126,7 +130,7 @@ public class InvoiceDAOImpl implements InvoiceDAO {
         List<Invoice> invoices = new ArrayList<>();
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SELECT_INVOICES_BY_CUSTOMER_ID)) {
+                PreparedStatement stmt = conn.prepareStatement(SELECT_INVOICES_BY_CUSTOMER_ID)) {
 
             stmt.setInt(1, customerId);
 
@@ -146,7 +150,7 @@ public class InvoiceDAOImpl implements InvoiceDAO {
     @Override
     public Invoice update(Invoice invoice) {
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(UPDATE_INVOICE)) {
+                PreparedStatement stmt = conn.prepareStatement(UPDATE_INVOICE)) {
 
             stmt.setString(1, invoice.getInvoiceNumber());
             stmt.setInt(2, invoice.getCustomerId());
@@ -175,7 +179,7 @@ public class InvoiceDAOImpl implements InvoiceDAO {
     @Override
     public void deleteById(int id) {
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(DELETE_INVOICE)) {
+                PreparedStatement stmt = conn.prepareStatement(DELETE_INVOICE)) {
 
             stmt.setInt(1, id);
             stmt.executeUpdate();
@@ -188,7 +192,7 @@ public class InvoiceDAOImpl implements InvoiceDAO {
     @Override
     public Optional<Invoice> findByInvoiceNumber(String invoiceNumber) {
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SELECT_INVOICE_BY_NUMBER)) {
+                PreparedStatement stmt = conn.prepareStatement(SELECT_INVOICE_BY_NUMBER)) {
 
             stmt.setString(1, invoiceNumber);
 
@@ -207,8 +211,8 @@ public class InvoiceDAOImpl implements InvoiceDAO {
     @Override
     public String generateNextInvoiceNumber() {
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(SELECT_MAX_INVOICE_NUMBER);
-             ResultSet rs = stmt.executeQuery()) {
+                PreparedStatement stmt = conn.prepareStatement(SELECT_MAX_INVOICE_NUMBER);
+                ResultSet rs = stmt.executeQuery()) {
 
             int nextNumber = 1;
             if (rs.next()) {
