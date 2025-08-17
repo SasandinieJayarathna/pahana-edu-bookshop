@@ -75,7 +75,7 @@
                                             </tr>
                                             <tr>
                                                 <td><strong>Price:</strong></td>
-                                                <td><strong class="text-success">$
+                                                <td><strong class="text-success">Rs.
                                                         <fmt:formatNumber value="${item.price}" pattern="#,##0.00" />
                                                     </strong></td>
                                             </tr>

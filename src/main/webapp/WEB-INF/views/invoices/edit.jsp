@@ -249,7 +249,7 @@
                                                         <option value="">Select an item...</option>
                                                         <c:forEach var="item" items="${items}">
                                                             <option value="${item.id}">
-                                                                ${item.name} (${item.code}) - $
+                                                                ${item.name} (${item.code}) - Rs.
                                                                 <fmt:formatNumber value="${item.price}"
                                                                     pattern="#,##0.00" />
                                                             </option>
@@ -266,7 +266,7 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <div class="mb-3">
-                                                    <label for="discount" class="form-label">Discount ($)</label>
+                                                    <label for="discount" class="form-label">Discount (Rs.)</label>
                                                     <input type="number" step="0.01" class="form-control" id="discount"
                                                         name="discount" min="0" value="0">
                                                 </div>
@@ -320,15 +320,15 @@
                                                                     <fmt:formatNumber value="${invoiceItem.quantity}"
                                                                         pattern="#,##0.00" />
                                                                 </td>
-                                                                <td>$
+                                                                <td>Rs.
                                                                     <fmt:formatNumber value="${invoiceItem.unitPrice}"
                                                                         pattern="#,##0.00" />
                                                                 </td>
-                                                                <td>$
+                                                                <td>Rs.
                                                                     <fmt:formatNumber value="${invoiceItem.discount}"
                                                                         pattern="#,##0.00" />
                                                                 </td>
-                                                                <td><strong>$
+                                                                <td><strong>Rs.
                                                                         <fmt:formatNumber
                                                                             value="${invoiceItem.lineTotal}"
                                                                             pattern="#,##0.00" />
@@ -371,28 +371,28 @@
                                             <table class="table table-borderless">
                                                 <tr>
                                                     <td><strong>Subtotal:</strong></td>
-                                                    <td class="text-end">$
+                                                    <td class="text-end">Rs.
                                                         <fmt:formatNumber value="${invoice.subtotal}"
                                                             pattern="#,##0.00" />
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Discount:</strong></td>
-                                                    <td class="text-end">-$
+                                                    <td class="text-end">-Rs.
                                                         <fmt:formatNumber value="${invoice.discountAmount}"
                                                             pattern="#,##0.00" />
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td><strong>Tax (15%):</strong></td>
-                                                    <td class="text-end">$
+                                                    <td class="text-end">Rs.
                                                         <fmt:formatNumber value="${invoice.taxAmount}"
                                                             pattern="#,##0.00" />
                                                     </td>
                                                 </tr>
                                                 <tr class="table-active">
                                                     <td><strong>Total Amount:</strong></td>
-                                                    <td class="text-end"><strong>$
+                                                    <td class="text-end"><strong>Rs.
                                                             <fmt:formatNumber value="${invoice.totalAmount}"
                                                                 pattern="#,##0.00" />
                                                         </strong></td>

@@ -7,78 +7,95 @@
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Register - Pahana Edu Billing System</title>
-            <link href="<link href=" https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-                rel="stylesheet">" rel="stylesheet">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+                rel="stylesheet">
             <style>
                 body {
-                    background-color: #f8f9fa;
+                    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+                    background: #f5f7fb;
                 }
 
-                .register-container {
-                    max-width: 450px;
-                    margin: 50px auto;
-                    padding: 30px;
-                    background: white;
-                    border-radius: 10px;
-                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+                .navbar-brand {
+                    font-weight: 600;
+                    letter-spacing: 0.2px;
                 }
 
-                .logo {
-                    text-align: center;
-                    margin-bottom: 30px;
+                .card-modern {
+                    border: 0;
+                    border-radius: 12px;
+                    box-shadow: 0 6px 18px rgba(45, 63, 84, 0.06);
+                }
+
+                .register-card {
+                    max-width: 520px;
+                    margin: 40px auto;
                 }
 
                 .logo h2 {
-                    color: #007bff;
-                    font-weight: bold;
+                    color: #0d6efd;
+                    font-weight: 700;
                 }
             </style>
         </head>
 
         <body>
-            <div class="container">
-                <div class="register-container">
-                    <div class="logo">
-                        <h2>Pahana Edu</h2>
-                        <p class="text-muted">Create New Account</p>
-                    </div>
+            <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+                <div class="container-fluid px-4">
+                    <a class="navbar-brand d-flex align-items-center" href="<c:url value='/dashboard'/>">
+                        <span class="me-2"><i class="fas fa-bolt text-primary"></i></span>
+                        <span>Pahana Edu</span>
+                    </a>
+                </div>
+            </nav>
 
-                    <c:if test="${not empty errorMessage}">
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            ${errorMessage}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    </c:if>
-
-                    <form method="post" action="<c:url value='/register'/>">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="name" name="name" value="${name}" required>
+            <div class="container-fluid px-4 mt-4">
+                <div class="register-card card card-modern">
+                    <div class="card-body p-4">
+                        <div class="logo text-center mb-3">
+                            <h2>Pahana Edu</h2>
+                            <p class="text-muted">Create New Account</p>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email Address</label>
-                            <input type="email" class="form-control" id="email" name="email" value="${email}" required>
-                        </div>
+                        <c:if test="${not empty errorMessage}">
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                ${errorMessage}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        </c:if>
 
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
+                        <form method="post" action="<c:url value='/register'/>">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="name" name="name" value="${name}" required>
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="confirmPassword" class="form-label">Confirm Password</label>
-                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
-                                required>
-                        </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email" name="email" value="${email}"
+                                    required>
+                            </div>
 
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">Register</button>
-                        </div>
-                    </form>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
 
-                    <div class="text-center mt-3">
-                        <p>Already have an account? <a href="<c:url value='/login'/>">Login here</a></p>
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                    required>
+                            </div>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">Register</button>
+                            </div>
+                        </form>
+
+                        <div class="text-center mt-3">
+                            <p>Already have an account? <a href="<c:url value='/login'/>">Login here</a></p>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -140,7 +140,7 @@
                                                         <td>
                                                             <span class="badge bg-info">${invoice.paymentStatus}</span>
                                                         </td>
-                                                        <td>
+                                                        <td>Rs.
                                                             <fmt:formatNumber value="${invoice.totalAmount}"
                                                                 pattern="#,##0.00" />
                                                         </td>

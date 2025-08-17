@@ -22,15 +22,16 @@ public class Customer {
 
     // Enum for customer types
     public enum CustomerType {
-        RESIDENTIAL, COMMERCIAL, INDUSTRIAL
+        RESIDENTIAL, COMMERCIAL, INDUSTRIAL, INSTITUTION, INDIVIDUAL, FAMILY, BUSINESS
     }
 
     // Default constructor
-    public Customer() {}
+    public Customer() {
+    }
 
     // Constructor for new customer creation
     public Customer(String name, String email, String phone, String address,
-                   String accountNumber, CustomerType customerType) {
+            String accountNumber, CustomerType customerType) {
         this.name = name;
         this.email = email;
         this.phone = phone;

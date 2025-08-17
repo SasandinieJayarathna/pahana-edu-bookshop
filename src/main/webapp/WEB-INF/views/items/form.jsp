@@ -94,7 +94,7 @@
                                         <label for="price" class="form-label">Price <span
                                                 class="text-danger">*</span></label>
                                         <div class="input-group">
-                                            <span class="input-group-text">$</span>
+                                            <span class="input-group-text">Rs.</span>
                                             <input type="number" step="0.01" class="form-control" id="price"
                                                 name="price" value="${item.price}" required min="0">
                                         </div>

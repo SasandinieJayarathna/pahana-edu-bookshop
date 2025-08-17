@@ -111,7 +111,7 @@
                     </c:if>
 
                     <div class="row g-3 mb-4">
-                        <div class="col-md-3 col-sm-6">
+                        <div class="col-lg-3 col-md-6">
                             <div class="card card-modern p-3 h-100">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon bg-primary">
@@ -129,7 +129,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3 col-sm-6">
+                        <div class="col-lg-3 col-md-6">
                             <div class="card card-modern p-3 h-100">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon bg-success">
@@ -147,7 +147,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3 col-sm-6">
+                        <div class="col-lg-3 col-md-6">
                             <div class="card card-modern p-3 h-100">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon bg-info">
@@ -165,14 +165,14 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3 col-sm-6">
+                        <div class="col-lg-3 col-md-6">
                             <div class="card card-modern p-3 h-100">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon bg-warning">
-                                        <i class="fas fa-dollar-sign fa-lg"></i>
+                                        <i class="fas fa-indian-rupee-sign fa-lg"></i>
                                     </div>
                                     <div>
-                                        <div class="stat-value">$
+                                        <div class="stat-value">Rs.
                                             <fmt:formatNumber value="${totalRevenue}" pattern="#,##0.00" />
                                         </div>
                                         <div class="stat-label">Total Revenue</div>
@@ -183,13 +183,174 @@
                         </div>
                     </div>
 
+                    <!-- Additional statistics row -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card card-modern p-3 h-100">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="stat-icon bg-danger">
+                                        <i class="fas fa-clock fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <div class="stat-value">${pendingInvoices}</div>
+                                        <div class="stat-label">Pending Invoices</div>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <a href="<c:url value='/invoices?action=list&status=PENDING'/>"
+                                        class="text-decoration-none small">View pending &rarr;</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card card-modern p-3 h-100">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="stat-icon bg-success">
+                                        <i class="fas fa-check-circle fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <div class="stat-value">${paidInvoices}</div>
+                                        <div class="stat-label">Paid Invoices</div>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <a href="<c:url value='/invoices?action=list&status=PAID'/>"
+                                        class="text-decoration-none small">View paid &rarr;</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card card-modern p-3 h-100">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="stat-icon bg-primary">
+                                        <i class="fas fa-calendar-alt fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <div class="stat-value">Rs.
+                                            <fmt:formatNumber value="${monthlyRevenue}" pattern="#,##0.00" />
+                                        </div>
+                                        <div class="stat-label">This Month</div>
+                                    </div>
+                                </div>
+                                <div class="mt-3 small text-muted">Current month revenue</div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-md-6">
+                            <div class="card card-modern p-3 h-100">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="stat-icon bg-info">
+                                        <i class="fas fa-percentage fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <div class="stat-value">
+                                            <c:choose>
+                                                <c:when test="${totalInvoices > 0}">
+                                                    <fmt:formatNumber value="${(paidInvoices / totalInvoices) * 100}"
+                                                        pattern="##.#" />%
+                                                </c:when>
+                                                <c:otherwise>0%</c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                        <div class="stat-label">Payment Rate</div>
+                                    </div>
+                                </div>
+                                <div class="mt-3 small text-muted">Invoice payment success rate</div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row g-3">
                         <div class="col-lg-8">
                             <div class="card card-modern p-3">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="mb-0">Recent Invoices</h5>
+                                    <a href="<c:url value='/invoices?action=list'/>"
+                                        class="btn btn-sm btn-outline-primary">View All</a>
+                                </div>
+                                <c:choose>
+                                    <c:when test="${empty recentInvoices}">
+                                        <div class="text-center py-4 text-muted">
+                                            <i class="fas fa-file-invoice fa-3x mb-3"></i>
+                                            <p>No invoices found. <a href="<c:url value='/invoices?action=new'/>">Create
+                                                    your first invoice</a></p>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="table-responsive">
+                                            <table class="table table-hover mb-0">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th>Invoice #</th>
+                                                        <th>Customer</th>
+                                                        <th>Date</th>
+                                                        <th>Amount</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <c:forEach var="invoice" items="${recentInvoices}">
+                                                        <tr>
+                                                            <td>
+                                                                <a href="<c:url value='/invoices?action=view&id=${invoice.id}'/>"
+                                                                    class="text-decoration-none fw-bold">${invoice.invoiceNumber}</a>
+                                                            </td>
+                                                            <td>
+                                                                <c:choose>
+                                                                    <c:when test="${not empty invoice.customer}">
+                                                                        ${invoice.customer.name}
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        Customer ID: ${invoice.customerId}
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </td>
+                                                            <td>
+                                                                ${invoice.invoiceDate}
+                                                            </td>
+                                                            <td>
+                                                                <span class="fw-bold">Rs.
+                                                                    <fmt:formatNumber value="${invoice.totalAmount}"
+                                                                        pattern="#,##0.00" />
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <c:choose>
+                                                                    <c:when test="${invoice.paymentStatus == 'PAID'}">
+                                                                        <span class="badge bg-success">Paid</span>
+                                                                    </c:when>
+                                                                    <c:when
+                                                                        test="${invoice.paymentStatus == 'PENDING'}">
+                                                                        <span class="badge bg-warning">Pending</span>
+                                                                    </c:when>
+                                                                    <c:when
+                                                                        test="${invoice.paymentStatus == 'OVERDUE'}">
+                                                                        <span class="badge bg-danger">Overdue</span>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <span
+                                                                            class="badge bg-secondary">${invoice.paymentStatus}</span>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="card card-modern p-3 mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h5 class="mb-0">Quick Actions</h5>
                                 </div>
-                                <div class="d-flex flex-wrap gap-2">
+                                <div class="d-grid gap-2">
                                     <a href="<c:url value='/customers?action=new'/>"
                                         class="btn btn-outline-primary quick-btn">
                                         <i class="fas fa-user-plus me-2"></i> Add Customer
@@ -204,14 +365,8 @@
                                     </a>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-lg-4">
-                            <div class="card card-modern p-3">
-                                <h6 class="mb-2">About</h6>
-                                <p class="small text-muted mb-0">Use the navigation and quick actions to manage
-                                    customers, items, and invoices efficiently.</p>
-                            </div>
+
                         </div>
                     </div>
                 </div>

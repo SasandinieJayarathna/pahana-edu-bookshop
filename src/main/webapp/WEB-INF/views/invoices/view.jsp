@@ -154,32 +154,47 @@
                                         <tr>
                                             <td>${item.item.name}</td>
                                             <td>${item.quantity}</td>
-                                            <td>$${item.unitPrice}</td>
-                                            <td>$${item.discount}</td>
-                                            <td>$${item.lineTotal}</td>
+                                            <td>Rs.
+                                                <fmt:formatNumber value="${item.unitPrice}" pattern="#,##0.00" />
+                                            </td>
+                                            <td>Rs.
+                                                <fmt:formatNumber value="${item.discount}" pattern="#,##0.00" />
+                                            </td>
+                                            <td>Rs.
+                                                <fmt:formatNumber value="${item.lineTotal}" pattern="#,##0.00" />
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                 </tbody>
                                 <tfoot>
                                     <tr>
                                         <td colspan="4" class="text-end"><strong>Subtotal:</strong></td>
-                                        <td><strong>$${invoice.subtotal}</strong></td>
+                                        <td><strong>Rs.
+                                                <fmt:formatNumber value="${invoice.subtotal}" pattern="#,##0.00" />
+                                            </strong></td>
                                     </tr>
                                     <c:if test="${invoice.taxAmount > 0}">
                                         <tr>
                                             <td colspan="4" class="text-end"><strong>Tax:</strong></td>
-                                            <td><strong>$${invoice.taxAmount}</strong></td>
+                                            <td><strong>Rs.
+                                                    <fmt:formatNumber value="${invoice.taxAmount}" pattern="#,##0.00" />
+                                                </strong></td>
                                         </tr>
                                     </c:if>
                                     <c:if test="${invoice.discountAmount > 0}">
                                         <tr>
                                             <td colspan="4" class="text-end"><strong>Discount:</strong></td>
-                                            <td><strong>-$${invoice.discountAmount}</strong></td>
+                                            <td><strong>-Rs.
+                                                    <fmt:formatNumber value="${invoice.discountAmount}"
+                                                        pattern="#,##0.00" />
+                                                </strong></td>
                                         </tr>
                                     </c:if>
                                     <tr class="table-active">
                                         <td colspan="4" class="text-end"><strong>Total Amount:</strong></td>
-                                        <td><strong>$${invoice.totalAmount}</strong></td>
+                                        <td><strong>Rs.
+                                                <fmt:formatNumber value="${invoice.totalAmount}" pattern="#,##0.00" />
+                                            </strong></td>
                                     </tr>
                                 </tfoot>
                             </table>

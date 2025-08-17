@@ -132,7 +132,7 @@
                                                                     <c:otherwise>${item.description}</c:otherwise>
                                                                 </c:choose>
                                                             </td>
-                                                            <td>$
+                                                            <td>Rs.
                                                                 <fmt:formatNumber value="${item.price}"
                                                                     pattern="#,##0.00" />
                                                             </td>
