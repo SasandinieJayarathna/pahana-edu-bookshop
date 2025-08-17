@@ -107,8 +107,8 @@
                                     </p>
                                 </div>
                                 <div>
-                                    <button onclick="printInvoice()" class="btn btn-outline-success btn-sm me-2"><i
-                                            class="fas fa-print"></i></button>
+                                    <!-- <button onclick="printInvoice()" class="btn btn-outline-success btn-sm me-2"><i
+                                            class="fas fa-print"></i></button> -->
                                     <a href="<c:url value='/invoices?action=view&id=${invoice.id}'/>"
                                         class="btn btn-outline-info btn-sm me-2"><i class="fas fa-eye"></i></a>
                                     <a href="<c:url value='/invoices?action=list'/>"
@@ -299,8 +299,8 @@
                                         </c:when>
                                         <c:otherwise>
                                             <div class="table-responsive">
-                                                <table class="table table-striped">
-                                                    <thead class="table-dark">
+                                                <table class="table table-hover align-middle">
+                                                    <thead class="table-modern">
                                                         <tr>
                                                             <th>Item</th>
                                                             <th>Code</th>

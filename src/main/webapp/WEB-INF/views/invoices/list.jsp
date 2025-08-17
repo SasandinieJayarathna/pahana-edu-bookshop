@@ -73,8 +73,8 @@
                     </c:if>
 
                     <!-- Invoice List -->
-                    <div class="card">
-                        <div class="card-header">
+                    <div class="card card-modern">
+                        <div class="card-header bg-white border-0">
                             <h5 class="mb-0">Invoices</h5>
                         </div>
                         <div class="card-body">
@@ -89,8 +89,8 @@
                                 </c:when>
                                 <c:otherwise>
                                     <div class="table-responsive">
-                                        <table class="table table-striped table-hover">
-                                            <thead class="table-dark">
+                                        <table class="table table-hover align-middle">
+                                            <thead class="table-modern">
                                                 <tr>
                                                     <th>Invoice #</th>
                                                     <th>Customer</th>
