@@ -5,7 +5,7 @@ import com.pahanaedu.model.Customer;
 import com.pahanaedu.util.DatabaseConnection;
 
 import java.sql.*;
-import java.time.LocalDateTime;
+// ...existing imports...
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,6 +46,10 @@ public class InvoiceDAOImpl implements InvoiceDAO {
             "FROM invoices i LEFT JOIN customers c ON i.customer_id = c.id WHERE i.invoiceNumber = ?";
 
     private static final String SELECT_MAX_INVOICE_NUMBER = "SELECT MAX(CAST(SUBSTRING(invoiceNumber, 4) AS UNSIGNED)) as max_num FROM invoices WHERE invoiceNumber LIKE 'INV%'";
+
+    // Aggregation queries
+    private static final String SELECT_SUM_TOTAL_AMOUNT = "SELECT SUM(totalAmount) as total FROM invoices";
+    private static final String SELECT_SUM_TOTAL_AMOUNT_BY_MONTH_YEAR = "SELECT SUM(totalAmount) as total FROM invoices WHERE MONTH(invoiceDate) = ? AND YEAR(invoiceDate) = ?";
 
     @Override
     public Invoice save(Invoice invoice) {
@@ -224,6 +228,44 @@ public class InvoiceDAOImpl implements InvoiceDAO {
 
         } catch (SQLException e) {
             throw new RuntimeException("Error generating next invoice number", e);
+        }
+    }
+
+    @Override
+    public java.math.BigDecimal sumTotalAmount() {
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(SELECT_SUM_TOTAL_AMOUNT);
+                ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                java.math.BigDecimal total = rs.getBigDecimal("total");
+                return total != null ? total : java.math.BigDecimal.ZERO;
+            }
+
+            return java.math.BigDecimal.ZERO;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error summing totalAmount", e);
+        }
+    }
+
+    @Override
+    public java.math.BigDecimal sumTotalAmountForMonthYear(int year, int month) {
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(SELECT_SUM_TOTAL_AMOUNT_BY_MONTH_YEAR)) {
+
+            stmt.setInt(1, month);
+            stmt.setInt(2, year);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    java.math.BigDecimal total = rs.getBigDecimal("total");
+                    return total != null ? total : java.math.BigDecimal.ZERO;
+                }
+            }
+
+            return java.math.BigDecimal.ZERO;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error summing totalAmount for month/year", e);
         }
     }
 

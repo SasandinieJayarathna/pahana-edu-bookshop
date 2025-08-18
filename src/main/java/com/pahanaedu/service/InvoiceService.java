@@ -179,6 +179,26 @@ public class InvoiceService {
     }
 
     /**
+     * Sum total revenue for all invoices (delegates to DAO)
+     * 
+     * @return total revenue as BigDecimal
+     */
+    public java.math.BigDecimal getTotalRevenue() {
+        return invoiceDAO.sumTotalAmount();
+    }
+
+    /**
+     * Sum total revenue for given month/year (month 1-12)
+     * 
+     * @param year  calendar year
+     * @param month calendar month (1-12)
+     * @return total revenue for the month/year
+     */
+    public java.math.BigDecimal getMonthlyRevenue(int year, int month) {
+        return invoiceDAO.sumTotalAmountForMonthYear(year, month);
+    }
+
+    /**
      * Remove item from invoice
      * 
      * @param invoiceItemId invoice item ID to remove

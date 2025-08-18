@@ -81,6 +81,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="<c:url value='/invoices?action=list'/>">Invoices</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<c:url value='/help.jsp'/>">Help</a>
+                                </li>
                             </ul>
 
                             <div class="d-flex align-items-center">

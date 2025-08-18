@@ -11,49 +11,144 @@
                     <title>Home</title>
                     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
                         rel="stylesheet">
+                    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+                        rel="stylesheet">
+                    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+                        rel="stylesheet">
                     <style>
                         body {
+                            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
                             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                             min-height: 100vh;
+                            color: #0f172a;
                         }
 
-                        .welcome-card {
-                            background: rgba(255, 255, 255, 0.95);
-                            border-radius: 15px;
-                            backdrop-filter: blur(10px);
+                        .navbar-brand {
+                            font-weight: 600;
+                        }
+
+                        .card-modern {
+                            border: 0;
+                            border-radius: 12px;
+                            box-shadow: 0 6px 18px rgba(45, 63, 84, 0.08);
+                        }
+
+                        .hero-card {
+                            background: rgba(255, 255, 255, 0.96);
+                        }
+
+                        .feature-card {
+                            border-radius: 10px;
                         }
                     </style>
                 </head>
 
-                <body class="d-flex align-items-center">
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-md-8 col-lg-6">
-                                <div class="welcome-card p-5 text-center">
-                                    <h1 class="display-4 text-primary mb-4">
-                                        <i class="fas fa-bolt"></i> Welcome
-                                    </h1>
+                <body>
+                    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+                        <div class="container-fluid px-4">
+                            <a class="navbar-brand d-flex align-items-center" href="<c:url value='/'/>">
+                                <span class="me-2"><i class="fas fa-bolt text-primary"></i></span>
+                                <span>Pahana Edu Billing</span>
+                            </a>
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#navbarNav">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarNav">
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                    <li class="nav-item"><a class="nav-link"
+                                            href="<c:url value='/dashboard'/>">Dashboard</a></li>
+                                    <li class="nav-item"><a class="nav-link"
+                                            href="<c:url value='/customers?action=list'/>">Customers</a></li>
+                                    <li class="nav-item"><a class="nav-link"
+                                            href="<c:url value='/items?action=list'/>">Items</a></li>
+                                    <li class="nav-item"><a class="nav-link"
+                                            href="<c:url value='/invoices?action=list'/>">Invoices</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="<c:url value='/help.jsp'/>">Help</a>
+                                    </li>
+                                </ul>
 
-                                    <p class="lead mb-4">
-                                        Access your billing portal to manage customers, items, and invoices.
-                                    </p>
+                                <div class="d-flex align-items-center">
+                                    <c:choose>
+                                        <c:when test="${not empty sessionScope.userName}">
+                                            <div class="me-3 text-muted small">Welcome,
+                                                <strong>${sessionScope.userName}</strong></div>
+                                            <a class="btn btn-outline-secondary btn-sm"
+                                                href="<c:url value='/logout'/>">Logout</a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a class="btn btn-primary btn-sm me-2"
+                                                href="<c:url value='/login'/>">Login</a>
+                                            <a class="btn btn-outline-secondary btn-sm"
+                                                href="<c:url value='/register'/>">Register</a>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
 
-                                    <div class="d-grid gap-2 col-md-8 mx-auto">
+                    <main class="container py-5">
+                        <div class="row align-items-center">
+                            <div class="col-lg-7">
+                                <div class="card card-modern hero-card p-5 mb-4">
+                                    <h1 class="display-5 text-primary mb-3">Modern billing, built for education
+                                        bookstores</h1>
+                                    <p class="lead text-muted mb-4">Manage customers, items and invoices with a simple,
+                                        fast interface tailored for small shops and institutes.</p>
+
+                                    <div class="d-flex gap-2">
                                         <a href="<c:url value='/login'/>" class="btn btn-primary btn-lg">
-                                            <i class="fas fa-sign-in-alt"></i> Login to System
+                                            <i class="fas fa-sign-in-alt me-2"></i> Login
                                         </a>
-                                        <a href="<c:url value='/register'/>" class="btn btn-outline-secondary">
-                                            <i class="fas fa-user-plus"></i> Create New Account
+                                        <a href="<c:url value='/register'/>" class="btn btn-outline-secondary btn-lg">
+                                            <i class="fas fa-user-plus me-2"></i> Register
+                                        </a>
+                                        <a href="<c:url value='/help.jsp'/>" class="btn btn-outline-info btn-lg">
+                                            <i class="fas fa-question-circle me-2"></i> Help
                                         </a>
                                     </div>
+                                </div>
 
-                                    <div class="mt-5 pt-4 border-top">
-                                        <!-- Removed Technology Stack and Demo Login details -->
+                                <div class="row g-3">
+                                    <div class="col-md-4">
+                                        <div class="card feature-card p-3 text-center">
+                                            <i class="fas fa-users fa-2x text-primary mb-2"></i>
+                                            <h6 class="mb-0">Customers</h6>
+                                            <p class="small text-muted mb-0">Add and manage customers</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card feature-card p-3 text-center">
+                                            <i class="fas fa-box fa-2x text-success mb-2"></i>
+                                            <h6 class="mb-0">Items</h6>
+                                            <p class="small text-muted mb-0">Maintain item catalog</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card feature-card p-3 text-center">
+                                            <i class="fas fa-file-invoice fa-2x text-warning mb-2"></i>
+                                            <h6 class="mb-0">Invoices</h6>
+                                            <p class="small text-muted mb-0">Create and print invoices</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-5 d-none d-lg-block">
+                                <div class="card card-modern p-4 h-100 text-center"
+                                    style="background:linear-gradient(180deg,#fff,#f7fbff)">
+                                    <div class="py-4">
+                                        <i class="fas fa-book-open fa-3x text-indigo-500 mb-3"
+                                            style="color:#6c63ff"></i>
+                                        <h5 class="mb-2">Designed for Bookshops</h5>
+                                        <p class="small text-muted">Quickly create invoices, track payments and manage
+                                            stock for academic bookstores.</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </main>
 
                     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>

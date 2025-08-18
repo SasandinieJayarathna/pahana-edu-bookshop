@@ -11,7 +11,7 @@ import java.io.IOException;
  * Authentication filter to protect secure pages
  * Checks for valid user session before allowing access to protected resources
  */
-@WebFilter(urlPatterns = {"/dashboard", "/customers/*", "/items/*", "/invoices/*"})
+@WebFilter(urlPatterns = { "/dashboard", "/customers/*", "/items/*", "/invoices/*" })
 public class AuthenticationFilter implements Filter {
 
     @Override
@@ -36,11 +36,9 @@ public class AuthenticationFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        // Initialization code if needed
     }
 
     @Override
     public void destroy() {
-        // Cleanup code if needed
     }
 }
