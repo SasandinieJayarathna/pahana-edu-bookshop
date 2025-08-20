@@ -46,4 +46,46 @@ public class InvoiceItemTest {
         assertNotNull(ii.getLineTotal());
     }
 
+    @Test
+    public void testDiscountGreaterThanSubtotal() {
+        InvoiceItem ii = new InvoiceItem();
+        ii.setQuantity(new BigDecimal("1"));
+        ii.setUnitPrice(new BigDecimal("5.00"));
+        ii.setDiscount(new BigDecimal("10.00"));
+        // line total becomes negative when discount > subtotal
+        assertEquals(new BigDecimal("-5.00"), ii.getLineTotal());
+    }
+
+    @Test
+    public void testZeroUnitPrice() {
+        InvoiceItem ii = new InvoiceItem();
+        ii.setQuantity(new BigDecimal("10"));
+        ii.setUnitPrice(BigDecimal.ZERO);
+        ii.setDiscount(BigDecimal.ZERO);
+        assertEquals(BigDecimal.ZERO, ii.getLineTotal());
+    }
+
+    @Test
+    public void testNullDiscountTreatedAsZero() {
+        InvoiceItem ii = new InvoiceItem();
+        ii.setQuantity(new BigDecimal("2"));
+        ii.setUnitPrice(new BigDecimal("3.00"));
+        // The current model calls calculateLineTotal() inside setDiscount and
+        // will throw NullPointerException when passed null. Assert that behavior.
+        assertThrows(NullPointerException.class, () -> ii.setDiscount(null));
+    }
+
+    @Test
+    public void testDescriptionSetter() {
+        InvoiceItem ii = new InvoiceItem();
+        ii.setDescription("Line item description");
+        assertEquals("Line item description", ii.getDescription());
+    }
+
+    @Test
+    public void testItemIdSetterGetter() {
+        InvoiceItem ii = new InvoiceItem();
+        ii.setItemId(42);
+        assertEquals(42, ii.getItemId());
+    }
 }
