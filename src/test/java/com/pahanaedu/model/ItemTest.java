@@ -22,4 +22,13 @@ public class ItemTest {
         it.setPrice(new BigDecimal("9.99"));
         assertEquals(new BigDecimal("9.99"), it.getPrice());
     }
+
+    @Test
+    public void testActivateDeactivate() {
+        Item it = new Item();
+        it.setActive(false);
+        assertFalse(it.isActive());
+        it.setActive(true);
+        assertTrue(it.isActive());
+    }
 }
