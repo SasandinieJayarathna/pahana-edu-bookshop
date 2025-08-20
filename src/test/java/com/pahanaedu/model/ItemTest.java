@@ -49,4 +49,23 @@ public class ItemTest {
         assertEquals("Notebook", it.getName());
         assertEquals("NB01", it.getCode());
     }
+
+    @Test
+    public void testCreatedUpdatedTimestamps() {
+        Item it = new Item();
+        assertNull(it.getCreatedAt());
+        assertNull(it.getUpdatedAt());
+        java.time.LocalDateTime now = java.time.LocalDateTime.now();
+        it.setCreatedAt(now);
+        it.setUpdatedAt(now);
+        assertEquals(now, it.getCreatedAt());
+        assertEquals(now, it.getUpdatedAt());
+    }
+
+    @Test
+    public void testUnitGetterSetter() {
+        Item it = new Item();
+        it.setUnit("box");
+        assertEquals("box", it.getUnit());
+    }
 }
