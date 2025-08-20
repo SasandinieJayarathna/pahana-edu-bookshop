@@ -49,4 +49,39 @@ public class InvoiceTest {
         assertEquals(new BigDecimal("13.50"), inv.getTaxAmount());
         assertEquals(new BigDecimal("103.50"), inv.getTotalAmount());
     }
+
+    @Test
+    public void testInvoiceNumberSetter() {
+        Invoice inv = new Invoice();
+        inv.setInvoiceNumber("INV-999");
+        assertEquals("INV-999", inv.getInvoiceNumber());
+    }
+
+    @Test
+    public void testDueDateAfterInvoiceDate() {
+        LocalDate d = LocalDate.now();
+        Invoice inv = new Invoice();
+        inv.setInvoiceDate(d);
+        inv.setDueDate(d.plusDays(10));
+        assertTrue(inv.getDueDate().isAfter(inv.getInvoiceDate()));
+    }
+
+    @Test
+    public void testNotesField() {
+        Invoice inv = new Invoice();
+        inv.setNotes("Payment due upon receipt");
+        assertEquals("Payment due upon receipt", inv.getNotes());
+    }
+
+    @Test
+    public void testCreatedUpdatedTimestamps() {
+        Invoice inv = new Invoice();
+        assertNull(inv.getCreatedAt());
+        assertNull(inv.getUpdatedAt());
+        java.time.LocalDateTime now = java.time.LocalDateTime.now();
+        inv.setCreatedAt(now);
+        inv.setUpdatedAt(now);
+        assertEquals(now, inv.getCreatedAt());
+        assertEquals(now, inv.getUpdatedAt());
+    }
 }
