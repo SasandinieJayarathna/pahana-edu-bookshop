@@ -27,4 +27,26 @@ public class InvoiceTest {
         assertEquals(today, inv.getInvoiceDate());
         assertEquals(due, inv.getDueDate());
     }
+
+    @Test
+    public void testPaymentStatusTransition() {
+        Invoice inv = new Invoice();
+        assertEquals(Invoice.PaymentStatus.PENDING, inv.getPaymentStatus());
+        inv.setPaymentStatus(Invoice.PaymentStatus.PAID);
+        assertEquals(Invoice.PaymentStatus.PAID, inv.getPaymentStatus());
+    }
+
+    @Test
+    public void testSetAndGetTotals() {
+        Invoice inv = new Invoice();
+        inv.setSubtotal(new BigDecimal("100.00"));
+        inv.setDiscountAmount(new BigDecimal("10.00"));
+        inv.setTaxAmount(new BigDecimal("13.50"));
+        inv.setTotalAmount(new BigDecimal("103.50"));
+
+        assertEquals(new BigDecimal("100.00"), inv.getSubtotal());
+        assertEquals(new BigDecimal("10.00"), inv.getDiscountAmount());
+        assertEquals(new BigDecimal("13.50"), inv.getTaxAmount());
+        assertEquals(new BigDecimal("103.50"), inv.getTotalAmount());
+    }
 }
