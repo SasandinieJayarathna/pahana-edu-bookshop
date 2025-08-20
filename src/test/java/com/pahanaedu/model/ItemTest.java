@@ -68,4 +68,11 @@ public class ItemTest {
         it.setUnit("box");
         assertEquals("box", it.getUnit());
     }
+
+    @Test
+    public void testDescriptionSetterGetter() {
+        Item it = new Item();
+        it.setDescription("A fine item");
+        assertEquals("A fine item", it.getDescription());
+    }
 }
