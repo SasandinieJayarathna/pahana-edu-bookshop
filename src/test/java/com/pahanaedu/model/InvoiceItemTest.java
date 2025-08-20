@@ -27,4 +27,23 @@ public class InvoiceItemTest {
         // lineTotal should be recalculated
         assertEquals(new BigDecimal("10.00"), ii.getLineTotal(), "Line total should be quantity*unitPrice - discount");
     }
+
+    @Test
+    public void testNegativeQuantityHandled() {
+        InvoiceItem ii = new InvoiceItem();
+        ii.setQuantity(new BigDecimal("-1"));
+        ii.setUnitPrice(new BigDecimal("5.00"));
+        ii.calculateLineTotal();
+        // negative quantities allowed at model level; verify arithmetic
+        assertEquals(new BigDecimal("-5.00"), ii.getLineTotal());
+    }
+
+    @Test
+    public void testLargeValuesPrecision() {
+        InvoiceItem ii = new InvoiceItem(1, 2, new BigDecimal("1000000"), new BigDecimal("12345.67"));
+        ii.calculateLineTotal();
+        // ensure large multiplication works without exception
+        assertNotNull(ii.getLineTotal());
+    }
+
 }
