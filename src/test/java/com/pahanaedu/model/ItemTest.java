@@ -31,4 +31,22 @@ public class ItemTest {
         it.setActive(true);
         assertTrue(it.isActive());
     }
+
+    @Test
+    public void testStockQuantitySetters() {
+        Item it = new Item();
+        it.setStockQuantity(10);
+        assertEquals(10, it.getStockQuantity());
+        it.setStockQuantity(0);
+        assertEquals(0, it.getStockQuantity());
+    }
+
+    @Test
+    public void testNameAndCodeSetters() {
+        Item it = new Item();
+        it.setName("Notebook");
+        it.setCode("NB01");
+        assertEquals("Notebook", it.getName());
+        assertEquals("NB01", it.getCode());
+    }
 }
