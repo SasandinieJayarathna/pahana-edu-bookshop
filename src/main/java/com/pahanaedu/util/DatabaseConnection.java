@@ -12,7 +12,7 @@ public class DatabaseConnection {
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/pahana_edu_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     private static final String DB_USERNAME = "root";
-    private static final String DB_PASSWORD = "admin";
+    private static final String DB_PASSWORD = "root";
     private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
 
     static {
